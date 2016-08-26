@@ -13,7 +13,7 @@ namespace GoFish
         public Deck Hand { get; set; }
         //public Deck Source { get; set; }
         public Values? HasBookOf { get; private set; }
-        public int BooksCount { get;private set; }
+        public int BooksCount { get;set; }
         public string Question { get; private set; }
 
         public Player(string name, Deck source)
@@ -24,6 +24,7 @@ namespace GoFish
             var cards = new List<Card>();
             Hand = new Deck();
             Hand.Cards.Clear();
+            source.Shuffle();
             TakeCardFromDeck(5,source);
             BooksCount = 0;
             HasBookOf = null;
@@ -51,10 +52,7 @@ namespace GoFish
 
             Question = questionString.ToString();
             return result;
-            //else
-            //{
-            //    TakeCardFromDeck(1);
-            //}
+           
          }
 
         public bool CheckForBooks()
@@ -120,9 +118,9 @@ namespace GoFish
             var cardsToRemove = Hand.Cards.Where(x => x.Value == HasBookOf).ToList();
             foreach(var card in cardsToRemove)
             {
-                cardsToRemove.Remove(card);
+                Hand.Cards.Remove(card);
             }
-            return string.Format(Name + " has book of " + HasBookOf); 
+            return string.Format(Name + " has book of " + HasBookOf+"s\n"); 
         }
 
         public void MakeUpWithBooks()

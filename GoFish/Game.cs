@@ -8,23 +8,26 @@ using System.Windows.Controls;
 
 namespace GoFish
 {
-    class Game
+    public class Game
     {
         public Player HumanPlayer { get; set; }
         public Player CompPlayer1 { get; set; }
         public Player CompPlayer2 { get; set; }
         public Deck Source { get; set; }
-        private ListBox hand { get; set; }
         public string Request { get; private set; }
         private Random rnd = new Random();
 
-        public Game(string realPlayerName, List<string> computerPlayerNames, ListBox listBox)
+
+        public Game()
+        {
+        }
+
+        public Game(string realPlayerName, List<string> computerPlayerNames)
         {
             Source = new Deck();
             HumanPlayer = new Player(realPlayerName,Source);
             CompPlayer1 = new Player(computerPlayerNames[0],Source);
             CompPlayer2 = new Player(computerPlayerNames[1],Source);
-            hand = listBox;
         }
 
 
@@ -48,11 +51,11 @@ namespace GoFish
             return Request;
         }
 
-        public bool PlayOneRound()
+        public bool PlayOneRound(Values value)
         {
             Request = string.Empty;
             var questionTextBuilder = new StringBuilder();
-            if (RoundforPlayer(HumanPlayer))
+            if (RoundforPlayer(HumanPlayer,value))
             {
                 Request = HumanPlayer.Question;
                 return true;
@@ -78,25 +81,25 @@ namespace GoFish
             }
         }
         
-        private bool RoundforPlayer(Player player)
+        private bool RoundforPlayer(Player player, params Values[] value)
         {
-            Values value;
+            Values currentValue;
             List<Player> anotherPlayers; 
             if (player == HumanPlayer)
             {
-                value = ((Card)hand.SelectedItem).Value;
+                currentValue = value[0];
                 anotherPlayers = new List<Player>() { CompPlayer1, CompPlayer2 };
             }
             else
             {
-                value = (Values)rnd.Next(13);
+                currentValue = (Values)rnd.Next(13);
                 if (player == CompPlayer1)
                     anotherPlayers = new List<Player>() { HumanPlayer, CompPlayer2 };
                 else
                     anotherPlayers = new List<Player>() { HumanPlayer, CompPlayer1 };
             }
                
-            if (player.AskForCard(anotherPlayers[0],anotherPlayers[1], value))
+            if (player.AskForCard(anotherPlayers[0],anotherPlayers[1], currentValue))
             {
                 player.MakeUpWithBooks();
                 if (player.Hand.Cards.Count == 0)
@@ -133,7 +136,7 @@ namespace GoFish
             var players = new List<Player>() { HumanPlayer, CompPlayer1, CompPlayer2 };
             var maxOfTwo = Math.Max(CompPlayer1.BooksCount, CompPlayer2.BooksCount);
             var max = Math.Max(maxOfTwo, HumanPlayer.BooksCount);
-            return players.Where(x => x.BooksCount == max).Select(x => x.Name).ToString();
+            return string.Format("{0} wins!",players.Where(x => x.BooksCount == max).Select(x => x.Name).ToString());
         }
     }
 }
