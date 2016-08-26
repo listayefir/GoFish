@@ -35,7 +35,7 @@ namespace GoFish
                 MessageBox.Show("Please enter your name", "Can't start the game");
                 return;
             }
-            game = new Game(TbName.Text, new List<string>() {"Joe", "Bob"}, TbGameProcess);
+            game = new Game(TbName.Text, new List<string>() {"Joe", "Bob"}, LbHand);
             BtnStart.IsEnabled = false;
             TbName.IsEnabled = false;
             BtnAskForCard.IsEnabled = true;
@@ -50,8 +50,8 @@ namespace GoFish
             {
                 LbHand.Items.Add(card);
             }
-            TbBooks.Text = game.DescribeBooks();
-            TbGameProcess.Text += game.DescribePlayerHands();
+            TbBooks.Text += game.DescribeBooks();
+            TbGameProcess.Text += game.DescribePlayerSteps();
             TbGameProcess.SelectionStart = TbGameProcess.Text.Length;
             TbGameProcess.ScrollToEnd();
         }
@@ -64,9 +64,9 @@ namespace GoFish
                 MessageBox.Show("Please select a card");
                 return;
             }
-            if (game.PlayOneRound(LbHand.SelectedIndex))
+            if (game.PlayOneRound())
             {
-                TbGameProcess.Text += "The winner is... " + game.GetWinnerName();
+                TbGameProcess.Text += game.GetWinnerName();
                 TbBooks.Text = game.DescribeBooks();
                 BtnAskForCard.IsEnabled = false;
             }

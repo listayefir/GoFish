@@ -5,3 +5,10 @@ d:\documents\visual studio 2015\Projects\GoFish\GoFishTests\bin\Debug\GoFish.exe
 d:\documents\visual studio 2015\Projects\GoFish\GoFishTests\bin\Debug\GoFish.pdb
 d:\documents\visual studio 2015\Projects\GoFish\GoFishTests\obj\Debug\GoFishTests.dll
 d:\documents\visual studio 2015\Projects\GoFish\GoFishTests\obj\Debug\GoFishTests.pdb
+C:\Users\Alice\Documents\Visual Studio 2015\Projects\GoFish\GoFishTests\bin\Debug\GoFishTests.dll
+C:\Users\Alice\Documents\Visual Studio 2015\Projects\GoFish\GoFishTests\bin\Debug\GoFishTests.pdb
+C:\Users\Alice\Documents\Visual Studio 2015\Projects\GoFish\GoFishTests\bin\Debug\GoFish.exe
+C:\Users\Alice\Documents\Visual Studio 2015\Projects\GoFish\GoFishTests\bin\Debug\GoFish.pdb
+C:\Users\Alice\Documents\Visual Studio 2015\Projects\GoFish\GoFishTests\obj\Debug\GoFishTests.csprojResolveAssemblyReference.cache
+C:\Users\Alice\Documents\Visual Studio 2015\Projects\GoFish\GoFishTests\obj\Debug\GoFishTests.dll
+C:\Users\Alice\Documents\Visual Studio 2015\Projects\GoFish\GoFishTests\obj\Debug\GoFishTests.pdb

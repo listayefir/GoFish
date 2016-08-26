@@ -18,23 +18,11 @@ namespace GoFishTests
         };
         
         private Player player = new Player("Vova", new Deck(source));
-        
 
         [TestMethod]
         public void HasCardTest()
         {
-            player.Hand.Cards.Clear();
-            List<Card> cards = new List<Card>()
-            {
-                new Card(Suits.Diamonds, Values.Ten),
-                new Card(Suits.Spades, Values.Queen),
-                new Card(Suits.Hearts, Values.Seven),
-                new Card(Suits.Hearts, Values.Jack),
-                new Card(Suits.Diamonds, Values.Queen)
-            };
-            
-            player.Hand=new Deck(cards);
-            
+            SetPlayersHand();
 
             Assert.IsTrue(player.HasCard(Values.Seven));
             Assert.IsTrue(player.HasCard(Values.Queen));
@@ -69,6 +57,44 @@ namespace GoFishTests
 
             Assert.AreEqual(player.Hand.Cards[5].ToString(), "Ten of Diamonds");
             Assert.AreEqual(player2.Hand.Cards[0].ToString(), "Queen of Spades");
+        }
+
+        [TestMethod()]
+        public void CheckForBooksTest()
+        {
+            SetPlayersHand();
+            var player2 = new Player("Petya", new Deck());
+            player2.Hand.Cards.Clear();
+            List<Card> cards = new List<Card>()
+            {
+                new Card(Suits.Diamonds, Values.Ten),
+                new Card(Suits.Spades, Values.Ten),
+                new Card(Suits.Hearts, Values.Ten),
+                new Card(Suits.Clubs, Values.Ten),
+                new Card(Suits.Diamonds, Values.Queen),
+                new Card(Suits.Clubs, Values.King)
+            };
+
+            player2.Hand = new Deck(cards);
+
+            Assert.IsTrue(player.HasBookOf == null);
+            Assert.IsTrue(player2.HasBookOf == Values.Ten);
+
+        }
+
+        public void SetPlayersHand()
+        {
+            player.Hand.Cards.Clear();
+            List<Card> cards = new List<Card>()
+            {
+                new Card(Suits.Diamonds, Values.Ten),
+                new Card(Suits.Spades, Values.Queen),
+                new Card(Suits.Hearts, Values.Seven),
+                new Card(Suits.Hearts, Values.Jack),
+                new Card(Suits.Diamonds, Values.Queen)
+            };
+
+            player.Hand = new Deck(cards);
         }
     }
 }

@@ -12,3 +12,17 @@ d:\documents\visual studio 2015\Projects\GoFish\GoFish\obj\Debug\GoFish.Properti
 d:\documents\visual studio 2015\Projects\GoFish\GoFish\obj\Debug\GoFish.csproj.GenerateResource.Cache
 d:\documents\visual studio 2015\Projects\GoFish\GoFish\obj\Debug\GoFish.exe
 d:\documents\visual studio 2015\Projects\GoFish\GoFish\obj\Debug\GoFish.pdb
+C:\Users\Alice\Documents\Visual Studio 2015\Projects\GoFish\GoFish\bin\Debug\GoFish.exe.config
+C:\Users\Alice\Documents\Visual Studio 2015\Projects\GoFish\GoFish\obj\Debug\GoFish.exe
+C:\Users\Alice\Documents\Visual Studio 2015\Projects\GoFish\GoFish\obj\Debug\GoFish.pdb
+C:\Users\Alice\Documents\Visual Studio 2015\Projects\GoFish\GoFish\bin\Debug\GoFish.exe
+C:\Users\Alice\Documents\Visual Studio 2015\Projects\GoFish\GoFish\bin\Debug\GoFish.pdb
+C:\Users\Alice\Documents\Visual Studio 2015\Projects\GoFish\GoFish\obj\Debug\GoFish.csprojResolveAssemblyReference.cache
+C:\Users\Alice\Documents\Visual Studio 2015\Projects\GoFish\GoFish\obj\Debug\MainWindow.g.cs
+C:\Users\Alice\Documents\Visual Studio 2015\Projects\GoFish\GoFish\obj\Debug\App.g.cs
+C:\Users\Alice\Documents\Visual Studio 2015\Projects\GoFish\GoFish\obj\Debug\GoFish_MarkupCompile.cache
+C:\Users\Alice\Documents\Visual Studio 2015\Projects\GoFish\GoFish\obj\Debug\GoFish_MarkupCompile.lref
+C:\Users\Alice\Documents\Visual Studio 2015\Projects\GoFish\GoFish\obj\Debug\MainWindow.baml
+C:\Users\Alice\Documents\Visual Studio 2015\Projects\GoFish\GoFish\obj\Debug\GoFish.g.resources
+C:\Users\Alice\Documents\Visual Studio 2015\Projects\GoFish\GoFish\obj\Debug\GoFish.Properties.Resources.resources
+C:\Users\Alice\Documents\Visual Studio 2015\Projects\GoFish\GoFish\obj\Debug\GoFish.csproj.GenerateResource.Cache

@@ -11,10 +11,10 @@ namespace GoFish
     {
         public string Name { get; set; }
         public Deck Hand { get; set; }
-        public Deck Source { get; set; }
-        private int handCount = 5;
-
-        public int booksCount { get; set; }
+        //public Deck Source { get; set; }
+        public Values? HasBookOf { get; private set; }
+        public int BooksCount { get;private set; }
+        public string Question { get; private set; }
 
         public Player(string name, Deck source)
         {
@@ -22,35 +22,67 @@ namespace GoFish
 
             Random rnd = new Random();
             var cards = new List<Card>();
-            var fullDeck = new Deck();
-            for (int i = 0; i < handCount; i++)
-            {
-                cards.Add(fullDeck.Cards[rnd.Next(0,fullDeck.Count-1)]);
-            }
-            Hand=new Deck(cards);
-            Source = source;
-            booksCount = 0;
+            Hand = new Deck();
+            Hand.Cards.Clear();
+            TakeCardFromDeck(5,source);
+            BooksCount = 0;
+            HasBookOf = null;
         }
 
-        public void AskForCard(Player player, Values value)
+        public bool AskForCard(Player player1, Player player2, Values value)
         {
-            if (player.HasCard(value))
+            var questionString = new StringBuilder();
+            questionString.Append(Name + " asked for " + value.ToString() + "s\n");
+            bool result=false;
+            if (player1.HasCard(value))
             {
-                TakeCard(player, value);
+                questionString.Append(string.Format("{0} has {1} of {2}s\n", player1.Name, TakeCard(player1, value), value));
+                result = true;
+            }
+            else
+                questionString.Append(player1.Name + " has 0 " + value + "s\n");
+            if (player2.HasCard(value))
+            {
+                questionString.Append(string.Format("{0} has {1} of {2}s\n", player2.Name, TakeCard(player2, value), value));
+                result = true;
+            }
+            else
+                questionString.Append(player2.Name + " has 0 " + value + "s\n");
+
+            Question = questionString.ToString();
+            return result;
+            //else
+            //{
+            //    TakeCardFromDeck(1);
+            //}
+         }
+
+        public bool CheckForBooks()
+        {
+            Values result=0;
+            var arrOfValues = new int[14];
+            foreach (var card in Hand.Cards)
+            {
+                arrOfValues[(int)card.Value]++;
+            }
+            foreach (var value in arrOfValues)
+            {
+                if (value == 4) result = (Values)Array.IndexOf(arrOfValues, value);
+            }
+            if (result != 0)
+            {
+                BooksCount++;
+                HasBookOf = result;
+                return true;
             }
             else
             {
-                TakeCardFromDeck();
+                HasBookOf = null;
+                return false;
             }
-         }
-
-        private Values? CheckForBooks()
-        {
-            var listOf
-
         }
 
-        public void TakeCard(Player player, Values value)
+        public int TakeCard(Player player, Values value)
         {
             var selectedCards = player.Hand.Cards
                 .Where(x => x.Value == value)
@@ -60,11 +92,16 @@ namespace GoFish
                 Hand.Add(card);
                 player.Hand.Deal(player.Hand.Cards.IndexOf(card));
             }
+            return selectedCards.Count;
         }
 
-        public void TakeCardFromDeck()
+        public void TakeCardFromDeck(int count, Deck source)
         {
-            Hand.Add(Source.Deal());
+            if (count == 0) return;
+            for (int i=0; i < count; i++)
+            {
+                Hand.Add(source.Deal());
+            }
         }
 
         public bool HasCard(Values value)
@@ -77,9 +114,28 @@ namespace GoFish
             else return false;
         }
 
-        public void Refresh(Deck source)
+        public string RemoveBook()
         {
-            Source = source;
+            if (HasBookOf == null) return string.Empty;
+            var cardsToRemove = Hand.Cards.Where(x => x.Value == HasBookOf).ToList();
+            foreach(var card in cardsToRemove)
+            {
+                cardsToRemove.Remove(card);
+            }
+            return string.Format(Name + " has book of " + HasBookOf); 
         }
+
+        public void MakeUpWithBooks()
+        {
+            if (CheckForBooks())
+            {
+                RemoveBook();
+            }
+        }
+
+        //public void RefreshSource(Deck source)
+        //{
+        //    Source = source;
+        //}
     }
 }
