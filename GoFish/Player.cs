@@ -15,6 +15,7 @@ namespace GoFish
         public Values? HasBookOf { get; private set; }
         public int BooksCount { get;set; }
         public string Question { get; private set; }
+        public  string BookInfo { get; private set; }
 
         public Player(string name, Deck source)
         {
@@ -112,15 +113,15 @@ namespace GoFish
             else return false;
         }
 
-        public string RemoveBook()
+        public void RemoveBook()
         {
-            if (HasBookOf == null) return string.Empty;
+            if (HasBookOf == null) BookInfo = null;
             var cardsToRemove = Hand.Cards.Where(x => x.Value == HasBookOf).ToList();
             foreach(var card in cardsToRemove)
             {
                 Hand.Cards.Remove(card);
             }
-            return string.Format(Name + " has book of " + HasBookOf+"s\n"); 
+             BookInfo=string.Format(Name + " has book of " + HasBookOf+"s\n"); 
         }
 
         public void MakeUpWithBooks()
@@ -131,9 +132,36 @@ namespace GoFish
             }
         }
 
-        //public void RefreshSource(Deck source)
-        //{
-        //    Source = source;
-        //}
+        public bool PlayRound(List<Player> anotherPlayers, Values value, Deck source)
+        {
+            BookInfo = null;
+            if (AskForCard(anotherPlayers[0], anotherPlayers[1], value))
+            {
+                MakeUpWithBooks();
+                if (Hand.Cards.Count == 0)
+                {
+                    if (source.Cards.Count <= 5)
+                    {
+                        TakeCardFromDeck(source.Cards.Count, source);
+                        MakeUpWithBooks();
+                        return true;
+                    }
+                    else
+                    {
+                        TakeCardFromDeck(5, source);
+                        MakeUpWithBooks();
+                    }
+                }
+                
+            }
+            else
+            {
+                if (source.Cards.Count != 0)
+                    TakeCardFromDeck(1, source);
+                else return true;
+            }
+
+            return false;
+        }
     }
 }

@@ -39,6 +39,7 @@ namespace GoFish
             BtnStart.IsEnabled = false;
             TbName.IsEnabled = false;
             BtnAskForCard.IsEnabled = true;
+            TbGameProcess.Text = "";
             UpdateForm();
 
         }
@@ -58,7 +59,7 @@ namespace GoFish
 
         private void BtnAskForCard_Click(object sender, RoutedEventArgs e)
         {
-            TbGameProcess.Text = "";
+            //TbGameProcess.Text = "";
             if (LbHand.SelectedIndex < 0)
             {
                 MessageBox.Show("Please select a card");
@@ -67,7 +68,7 @@ namespace GoFish
             if (game.PlayOneRound(((Card)LbHand.SelectedItem).Value))
             {
                 TbGameProcess.Text += game.GetWinnerName();
-                TbBooks.Text = game.DescribeBooks();
+                TbBooks.Text += game.DescribeBooks();
                 BtnAskForCard.IsEnabled = false;
             }
             else

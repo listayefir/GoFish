@@ -16,58 +16,86 @@ namespace GoFishTests
             new Card(Suits.Spades, Values.Three),
             new Card(Suits.Hearts, Values.Four),
             new Card(Suits.Clubs,  Values.Five),
-            new Card(Suits.Hearts, Values.Six),
-            new Card(Suits.Diamonds, Values.Seven)
+            new Card(Suits.Spades, Values.Two),
+            new Card(Suits.Spades, Values.Seven)
         };
 
-        private List<Card> cards = new List<Card>()
+        private static Deck sourceDeck = new Deck(source);
+        private Player humanPlayer = new Player("Vova", new Deck());
+        private Player compPlayer1 = new Player("Comp1", new Deck());
+        private Player compPlayer2 = new Player("Comp2", new Deck());
+
+        private void SetPlayersHands()
+        {
+            humanPlayer.Hand.Cards.Clear();
+            compPlayer1.Hand.Cards.Clear();
+            compPlayer2.Hand.Cards.Clear();
+
+            List<Card> cards = new List<Card>()
             {
-                new Card(Suits.Diamonds, Values.Ten),
-                new Card(Suits.Spades, Values.Queen),
-                new Card(Suits.Hearts, Values.Seven),
-                new Card(Suits.Hearts, Values.Jack),
-                new Card(Suits.Diamonds, Values.Queen)
+                new Card(Suits.Diamonds, Values.Five),
+                new Card(Suits.Clubs, Values.Three),
+                new Card(Suits.Hearts, Values.Three),
+                new Card(Suits.Hearts, Values.Six),
+                new Card(Suits.Spades, Values.Four)
             };
 
+            List<Card> cards1 = new List<Card>()
+            {
+                new Card(Suits.Hearts, Values.Two),
+                new Card(Suits.Clubs, Values.Six),
+                new Card(Suits.Spades, Values.Five),
+                new Card(Suits.Diamonds, Values.Four),
+                new Card(Suits.Hearts, Values.Five)
+            };
 
-        private Player player = new Player("Vova", new Deck(source));
+            List<Card> cards2 = new List<Card>()
+            {
+                new Card(Suits.Clubs, Values.Two),
+                new Card(Suits.Diamonds, Values.Six),
+                new Card(Suits.Spades, Values.Six),
+                new Card(Suits.Diamonds, Values.Three),
+                new Card(Suits.Clubs, Values.Four)
+            };
+
+            humanPlayer.Hand = new Deck(cards);
+            compPlayer1.Hand = new Deck(cards1);
+            compPlayer2.Hand = new Deck(cards2);
+        }
 
         [TestMethod]
         public void HasCardTest()
         {
-            SetPlayersHand(player,cards);
+            SetPlayersHands();
 
-            Assert.IsTrue(player.HasCard(Values.Seven));
-            Assert.IsTrue(player.HasCard(Values.Queen));
-            Assert.IsFalse(player.HasCard(Values.Ace));
+            Assert.IsTrue(humanPlayer.HasCard(Values.Five));
+            Assert.IsFalse(humanPlayer.HasCard(Values.Ace));
         }
 
         [TestMethod()]
         public void TakeCardFromDeckTest()
         {
-            player.TakeCardFromDeck(1, new Deck(source));
+            humanPlayer.TakeCardFromDeck(1, new Deck(source));
 
-            Assert.AreEqual(player.Hand.Cards[5].ToString(), "Two of Diamonds");
+            Assert.AreEqual(humanPlayer.Hand.Cards[5].ToString(), "Two of Diamonds");
         }
 
         [TestMethod()]
         public void TakeCardTest()
         {
-            var player2 = new Player("Vasya", new Deck(source));
-            SetPlayersHand(player2,cards);
+            SetPlayersHands();
             
-            player.TakeCard(player2, Values.Ten);
+            humanPlayer.TakeCard(compPlayer1, Values.Two);
 
-            Assert.AreEqual(player.Hand.Cards[5].ToString(), "Ten of Diamonds");
-            Assert.AreEqual(player2.Hand.Cards[0].ToString(), "Queen of Spades");
+            Assert.AreEqual(humanPlayer.Hand.Cards[5].ToString(), "Two of Hearts");
+            Assert.AreEqual(compPlayer1.Hand.Cards[0].ToString(), "Six of Clubs");
         }
 
         [TestMethod()]
         public void CheckForBooksTest()
         {
-            SetPlayersHand(player, this.cards);
-            var player2 = new Player("Petya", new Deck());
-            player2.Hand.Cards.Clear();
+            SetPlayersHands();
+            compPlayer1.Hand.Cards.Clear();
             List<Card> cards = new List<Card>()
             {
                 new Card(Suits.Diamonds, Values.Ten),
@@ -78,25 +106,19 @@ namespace GoFishTests
                 new Card(Suits.Clubs, Values.King)
             };
 
-            player2.Hand = new Deck(cards);
-            player.CheckForBooks();
-            player2.CheckForBooks();
-            Assert.AreEqual(null, player.HasBookOf);
-            Assert.AreEqual(Values.Ten, player2.HasBookOf);
+            compPlayer1.Hand = new Deck(cards);
+            humanPlayer.CheckForBooks();
+            compPlayer1.CheckForBooks();
+            Assert.AreEqual(null, humanPlayer.HasBookOf);
+            Assert.AreEqual(Values.Ten, compPlayer1.HasBookOf);
             //Assert.AreEqual(Values.Ten, player2.HasBookOf);
 
-        }
-
-        public void SetPlayersHand(Player player,IEnumerable<Card> cards )
-        {
-            player.Hand.Cards.Clear();
-            player.Hand = new Deck(cards);
         }
 
         [TestMethod]
         public void RemoveBookTest()
         {
-            player.Hand.Cards.Clear();
+            humanPlayer.Hand.Cards.Clear();
             List<Card> cards = new List<Card>()
             {
                 new Card(Suits.Diamonds, Values.Ten),
@@ -106,49 +128,124 @@ namespace GoFishTests
                 new Card(Suits.Diamonds, Values.Queen)
             };
 
-            player.Hand = new Deck(cards);
+            humanPlayer.Hand = new Deck(cards);
 
-            player.CheckForBooks();
-            string result = player.RemoveBook();
-            Assert.AreEqual("Vova has book of Tens\n",result);
+            humanPlayer.CheckForBooks();
+            humanPlayer.RemoveBook();
+            Assert.AreEqual("Vova has book of Tens\n",humanPlayer.BookInfo);
         }
 
         [TestMethod]
         public void AskForCardWhenHasTest()
         {
-            var player1 = new Player("Vasya", new Deck(source));
-            var player2 = new Player("Anna", new Deck(source));
-            SetPlayersHand(player,cards);
-            SetPlayersHand(player1,cards);
-            SetPlayersHand(player2,cards);
+           SetPlayersHands();
 
-            var result = player.AskForCard(player1, player2, Values.Ten);
-            string question = "Vova asked for Tens\n" +
-                              "Vasya has 1 of Tens\n" +
-                              "Anna has 1 of Tens\n";
+            var result = humanPlayer.AskForCard(compPlayer1, compPlayer2, Values.Six);
+            string question = "Vova asked for Sixs\n" +
+                              "Comp1 has 1 of Sixs\n" +
+                              "Comp2 has 2 of Sixs\n";
                 
 
             Assert.IsTrue(result);
-            Assert.AreEqual(question, player.Question);
+            Assert.AreEqual(question, humanPlayer.Question);
         }
 
         [TestMethod]
         public void AskForCardWhenHasNotTest()
         {
-            var player1 = new Player("Vasya", new Deck(source));
-            var player2 = new Player("Anna", new Deck(source));
-            SetPlayersHand(player, cards);
-            SetPlayersHand(player1, cards);
-            SetPlayersHand(player2, cards);
+            SetPlayersHands();
 
-            var result = player.AskForCard(player1, player2, Values.King);
+            var result = humanPlayer.AskForCard(compPlayer1, compPlayer2, Values.King);
             string question = "Vova asked for Kings\n" +
-                              "Vasya has 0 Kings\n" +
-                              "Anna has 0 Kings\n";
+                              "Comp1 has 0 Kings\n" +
+                              "Comp2 has 0 Kings\n";
 
             Assert.IsFalse(result);
-            Assert.AreEqual(question,player.Question);
+            Assert.AreEqual(question,humanPlayer.Question);
         }
+
+        //Игроки 2 и 3 отдают игроку 1 карты
+        //результат выполнения метода - false
+        [TestMethod]
+        public void RoundForPlayerTestFalse()
+        {
+            SetPlayersHands();
+            var result = humanPlayer.PlayRound(new List<Player>() { compPlayer1, compPlayer2 }, Values.Six, sourceDeck);
+            string question = "Vova asked for Sixs\n" +
+                              "Comp1 has 1 of Sixs\n" +
+                              "Comp2 has 2 of Sixs\n";
+            Assert.IsTrue(humanPlayer.HasBookOf == Values.Six);
+            Assert.AreEqual("Four of Spades", humanPlayer.Hand.Cards[3].ToString());
+            Assert.IsFalse(result);
+            Assert.AreEqual(question, humanPlayer.Question);
+        }
+
+        //Игроки 2 и 3 НЕ отдают игроку 1 карты
+        //в ресурсной колоде 5 карт
+        //результат выполнения метода - false
+        [TestMethod]
+        public void RoundForPlayerTestFalse1()
+        {
+            SetPlayersHands();
+            var result = humanPlayer.PlayRound(new List<Player>() { compPlayer1, compPlayer2 }, Values.Seven, sourceDeck);
+            string question = "Vova asked for Sevens\n" +
+                              "Comp1 has 0 Sevens\n" +
+                              "Comp2 has 0 Sevens\n";
+            Assert.AreEqual("Two of Diamonds", humanPlayer.Hand.Cards[5].ToString());
+            Assert.AreEqual("Three of Spades", sourceDeck.Cards[0].ToString());
+            Assert.IsFalse(result);
+            Assert.AreEqual(question, humanPlayer.Question);
+        }
+
+
+        //Игрок 1 собирает комплект, берет из колоды 5 карт, в колоде еще остаются карты
+        //результат выполнения метода - false
+        [TestMethod]
+        public void RoundForPlayerTestFalse2()
+        {
+            SetPlayersHands();
+            humanPlayer.Hand.Cards.Clear();
+            humanPlayer.Hand= new Deck(new List<Card>() {new Card(Suits.Hearts, Values.Six)});
+
+            var result = humanPlayer.PlayRound(new List<Player>() { compPlayer1, compPlayer2 }, Values.Six, sourceDeck);
+            string question = "Vova asked for Sixs\n" +
+                              "Comp1 has 1 of Sixs\n" +
+                              "Comp2 has 2 of Sixs\n";
+
+            Assert.AreEqual("Two of Diamonds", humanPlayer.Hand.Cards[0].ToString());
+            Assert.AreEqual("Two of Spades", humanPlayer.Hand.Cards[4].ToString());
+            Assert.AreEqual("Seven of Spades", sourceDeck.Cards[0].ToString());
+            Assert.IsTrue(sourceDeck.Cards.Count==1);
+            Assert.IsFalse(result);
+            Assert.AreEqual(question, humanPlayer.Question);
+        }
+
+        //Игрок 1 собирает комплект, берет из колоды 5 карт, в колоде больше не остается карт
+        //результат выполнения метода - true
+        [TestMethod]
+        public void RoundForPlayerTestTrue()
+        {
+            SetPlayersHands();
+            humanPlayer.Hand.Cards.Clear();
+            humanPlayer.Hand = new Deck(new List<Card>() { new Card(Suits.Hearts, Values.Six) });
+            sourceDeck.Deal(5);
+            var result = humanPlayer.PlayRound(new List<Player>() { compPlayer1, compPlayer2 }, Values.Six, sourceDeck);
+            string question = "Vova asked for Sixs\n" +
+                              "Comp1 has 1 of Sixs\n" +
+                              "Comp2 has 2 of Sixs\n";
+
+            Assert.AreEqual("Two of Diamonds", humanPlayer.Hand.Cards[0].ToString());
+            Assert.AreEqual("Two of Spades", humanPlayer.Hand.Cards[4].ToString());
+            Assert.IsTrue(sourceDeck.Cards.Count == 0);
+            Assert.IsTrue(result);
+            Assert.AreEqual(question, humanPlayer.Question);
+        }
+
+        
+        
+
+
+
 
 
     }
