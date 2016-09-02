@@ -1,9 +1,6 @@
-﻿using System;
-using GoFish;
+﻿using GoFish;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
-using System.Reflection;
-using System.Threading;
 
 namespace GoFishTests
 {

@@ -60,12 +60,12 @@ namespace GoFish
         private void BtnAskForCard_Click(object sender, RoutedEventArgs e)
         {
             //TbGameProcess.Text = "";
-            if (LbHand.SelectedIndex < 0)
+            if (LbHand.SelectedIndex < 0 && LbHand.Items.Count != 0)
             {
                 MessageBox.Show("Please select a card");
                 return;
             }
-            if (game.PlayOneRound(((Card)LbHand.SelectedItem).Value))
+            if (game.PlayOneRound(((Card)LbHand.SelectedItem).Value) || LbHand.Items.Count == 0)
             {
                 TbGameProcess.Text += game.GetWinnerName();
                 TbBooks.Text += game.DescribeBooks();

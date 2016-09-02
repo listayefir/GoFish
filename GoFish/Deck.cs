@@ -9,15 +9,15 @@ namespace GoFish
     public class Deck
     {
         public List<Card> Cards { get; set; }
-        private Random rnd = new Random();
-        public int Count { get { return Cards.Count; } }
-        
+        private readonly Random _rnd = new Random();
+        public int Count => Cards.Count;
+
 
         public Deck()
         {
             Cards = new List<Card>();
-            for (int suit = 0; suit<=3;suit++)
-                for(int value = 1; value<=13; value++)
+            for (int suit = 0; suit <= 3 ; suit++)
+                for(int value = 1; value <= 13; value++)
                     Cards.Add(new Card((Suits)suit,(Values)value));
         }
 
@@ -48,7 +48,7 @@ namespace GoFish
             for (int i = 0; i < Cards.Count; i++)
             {
                 var temp = Cards[i];
-                var a = rnd.Next(0, Cards.Count - 1);
+                var a = _rnd.Next(0, Cards.Count - 1);
                 Cards[i] = Cards[a];
                 Cards[a] = temp;
             }

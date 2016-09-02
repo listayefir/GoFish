@@ -12,3 +12,5 @@ C:\Users\Alice\Documents\Visual Studio 2015\Projects\GoFish\GoFishTests\bin\Debu
 C:\Users\Alice\Documents\Visual Studio 2015\Projects\GoFish\GoFishTests\obj\Debug\GoFishTests.csprojResolveAssemblyReference.cache
 C:\Users\Alice\Documents\Visual Studio 2015\Projects\GoFish\GoFishTests\obj\Debug\GoFishTests.dll
 C:\Users\Alice\Documents\Visual Studio 2015\Projects\GoFish\GoFishTests\obj\Debug\GoFishTests.pdb
+D:\Documents\Visual Studio 2015\Projects\GoFish\GoFishTests\bin\Debug\GoFishTests.dll.CodeAnalysisLog.xml
+D:\Documents\Visual Studio 2015\Projects\GoFish\GoFishTests\bin\Debug\GoFishTests.dll.lastcodeanalysissucceeded

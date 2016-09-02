@@ -136,9 +136,9 @@ namespace GoFishTests
             compPlayer1.PlayRound(new List<Player>() { humanPlayer, compPlayer2 }, Values.Five, sourceDeck);
             compPlayer2.PlayRound(new List<Player>() { humanPlayer, compPlayer1 }, Values.Four, sourceDeck);
 
-            var answer = "Vova has book of Sixs" +
-                         "\nComp1 has book of Fives" +
-                         "\nComp2 has book of Fours";
+            var answer = "Vova has book of Sixs\n" +
+                         "Comp1 has book of Fives\n" +
+                         "Comp2 has book of Fours\n";
             var result = game.DescribeBooks();
 
             Assert.AreEqual(answer,result);

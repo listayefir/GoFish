@@ -1,51 +1,51 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace GoFish
 {
     public class Player
     {
-        public string Name { get; set; }
-        public Deck Hand { get; set; }
-        //public Deck Source { get; set; }
-        public Values? HasBookOf { get; private set; }
-        public int BooksCount { get;set; }
-        public string Question { get; private set; }
-        public  string BookInfo { get; private set; }
-
         public Player(string name, Deck source)
         {
             Name = name;
 
-            Random rnd = new Random();
+            var rnd = new Random();
             var cards = new List<Card>();
             Hand = new Deck();
             Hand.Cards.Clear();
             source.Shuffle();
-            TakeCardFromDeck(5,source);
+            TakeCardFromDeck(5, source);
             BooksCount = 0;
             HasBookOf = null;
         }
 
+        public string Name { get; set; }
+        public Deck Hand { get; set; }
+        //public Deck Source { get; set; }
+        public Values? HasBookOf { get; private set; }
+        public int BooksCount { get; set; }
+        public string Question { get; private set; }
+        public string BookInfo { get; private set; }
+
         public bool AskForCard(Player player1, Player player2, Values value)
         {
             var questionString = new StringBuilder();
-            questionString.Append(Name + " asked for " + value.ToString() + "s\n");
-            bool result=false;
+            questionString.Append(Name + " asked for " + value + "s\n");
+            var result = false;
             if (player1.HasCard(value))
             {
-                questionString.Append(string.Format("{0} has {1} of {2}s\n", player1.Name, TakeCard(player1, value), value));
+                questionString.Append(string.Format("{0} has {1} of {2}s\n", player1.Name, TakeCard(player1, value),
+                    value));
                 result = true;
             }
             else
                 questionString.Append(player1.Name + " has 0 " + value + "s\n");
             if (player2.HasCard(value))
             {
-                questionString.Append(string.Format("{0} has {1} of {2}s\n", player2.Name, TakeCard(player2, value), value));
+                questionString.Append(string.Format("{0} has {1} of {2}s\n", player2.Name, TakeCard(player2, value),
+                    value));
                 result = true;
             }
             else
@@ -53,32 +53,24 @@ namespace GoFish
 
             Question = questionString.ToString();
             return result;
-           
-         }
+        }
 
         public bool CheckForBooks()
         {
-            Values result=0;
+            Values result = 0;
             var arrOfValues = new int[14];
             foreach (var card in Hand.Cards)
-            {
-                arrOfValues[(int)card.Value]++;
-            }
+                arrOfValues[(int) card.Value]++;
             foreach (var value in arrOfValues)
-            {
-                if (value == 4) result = (Values)Array.IndexOf(arrOfValues, value);
-            }
+                if (value == 4) result = (Values) Array.IndexOf(arrOfValues, value);
             if (result != 0)
             {
                 BooksCount++;
                 HasBookOf = result;
                 return true;
             }
-            else
-            {
-                HasBookOf = null;
-                return false;
-            }
+            HasBookOf = null;
+            return false;
         }
 
         public int TakeCard(Player player, Values value)
@@ -86,6 +78,7 @@ namespace GoFish
             var selectedCards = player.Hand.Cards
                 .Where(x => x.Value == value)
                 .ToList();
+
             foreach (var card in selectedCards)
             {
                 Hand.Add(card);
@@ -97,39 +90,28 @@ namespace GoFish
         public void TakeCardFromDeck(int count, Deck source)
         {
             if (count == 0) return;
-            for (int i=0; i < count; i++)
-            {
+            for (var i = 0; i < count; i++)
                 Hand.Add(source.Deal());
-            }
         }
 
         public bool HasCard(Values value)
         {
-            var check = Hand.Cards
-                .Select(x => x.Value)
-                .Where(x => x == value)
-                .ToList();
-            if (check.Count != 0) return true;
-            else return false;
+            return Hand.Cards.Any(card => card.Value == value);
         }
 
         public void RemoveBook()
         {
             if (HasBookOf == null) BookInfo = null;
             var cardsToRemove = Hand.Cards.Where(x => x.Value == HasBookOf).ToList();
-            foreach(var card in cardsToRemove)
-            {
+            foreach (var card in cardsToRemove)
                 Hand.Cards.Remove(card);
-            }
-             BookInfo=string.Format(Name + " has book of " + HasBookOf+"s\n"); 
+            BookInfo = string.Format(Name + " has book of " + HasBookOf + "s\n");
         }
 
         public void MakeUpWithBooks()
         {
             if (CheckForBooks())
-            {
                 RemoveBook();
-            }
         }
 
         public bool PlayRound(List<Player> anotherPlayers, Values value, Deck source)
@@ -138,26 +120,23 @@ namespace GoFish
             if (AskForCard(anotherPlayers[0], anotherPlayers[1], value))
             {
                 MakeUpWithBooks();
-                if (Hand.Cards.Count == 0)
+                if (Hand.Cards.Count != 0) return false;
+                if (source.Cards.Count <= 5)
                 {
-                    if (source.Cards.Count <= 5)
-                    {
-                        TakeCardFromDeck(source.Cards.Count, source);
-                        MakeUpWithBooks();
-                        return true;
-                    }
-                    else
-                    {
-                        TakeCardFromDeck(5, source);
-                        MakeUpWithBooks();
-                    }
+                    TakeCardFromDeck(source.Cards.Count, source);
+                    MakeUpWithBooks();
+                    return true;
                 }
-                
+                TakeCardFromDeck(5, source);
+                MakeUpWithBooks();
             }
             else
             {
                 if (source.Cards.Count != 0)
+                {
                     TakeCardFromDeck(1, source);
+                    MakeUpWithBooks();
+                }
                 else return true;
             }
 
