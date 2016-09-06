@@ -5,50 +5,102 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GoFish"
         mc:Ignorable="d"
-        Title="Go Fish!" Height="534.486" Width="551.471" FontSize="16" FontFamily="Showcard Gothic"
+        Title="Go Fish!" Height="Auto" Width="Auto" FontSize="16" FontFamily="Showcard Gothic"
         WindowStyle="ThreeDBorderWindow" Background="#FF795548">
     <Grid Margin="10,0,0,53">
         <Grid.RowDefinitions>
-            <RowDefinition Height="11*" />
-            <RowDefinition Height="64*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" MinHeight="150" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="320*" />
-            <ColumnDefinition Width="225*" />
+            <ColumnDefinition Width="5*" />
+            <ColumnDefinition Width="40"/>
+            <ColumnDefinition Width="2*" />
         </Grid.ColumnDefinitions>
 
-        <Label x:Name="label"
-               Content="Your name"
+
+        <TextBlock Text="Your name"
+                   Foreground="#D4E157"
+                   Margin="0,0,0,20"/>
+        
+        <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="0">
+            <TextBox  x:Name="TbName"
+                      FontSize="24"
+                      MinWidth="300"
+                      Width="500"
+                      Background="#FFA1887F" />
+            <Button x:Name="BtnStart"
+                    Content="Start the game"
+                    Foreground="#D4E157"
+                    Margin="20,0"
+                    Background="#FF3E2723"
+                    BorderBrush="#FF3E2723"
+                    Click="BtnStart_Click" />
+        </StackPanel>
+
+        <TextBlock Text="Game progress"
                Foreground="#D4E157"
-               HorizontalAlignment="Left"
-               Margin="10,10,0,0"
-               VerticalAlignment="Top"
-               Height="31"
-               Width="104" />
-        <TextBox Grid.Row="0"
-                 x:Name="TbName"
+               Grid.Column="0" 
+               Grid.Row="2"
+               Margin="0,20,0,20"  />
+
+        <ScrollViewer x:Name="TbGameProcess" 
+                      Margin="0,20,0,20" 
+                      Grid.Column="0" 
+                      Grid.Row="2"
+                      Background="#FFA1887F" />
+        
+        <Label x:Name="label1" 
+               Content="Your hand" 
+               Foreground="#D4E157" 
+               HorizontalAlignment="Left" 
+               Margin="18,10,0,0"
+               VerticalAlignment="Top" 
+               Height="31" Width="103"
+               Grid.Column="2" />
+        <ListBox x:Name="LbHand" 
+                 Grid.Column="2" 
                  HorizontalAlignment="Left"
-                 Height="25"
-                 Margin="10,41,0,0" TextWrapping="Wrap"
-                 VerticalAlignment="Top" Width="157" Background="#FFA1887F" />
-        <Button x:Name="BtnStart" Content="Start the game" Foreground="#D4E157" HorizontalAlignment="Left"
-                Margin="172,10,0,0" VerticalAlignment="Top" Width="135" Height="56" Background="#FF3E2723"
-                BorderBrush="#FF3E2723" Click="BtnStart_Click" />
-        <Label x:Name="label1" Content="Your hand" Foreground="#D4E157" HorizontalAlignment="Left" Margin="18,10,0,0"
-               VerticalAlignment="Top" Height="31" Width="103" Grid.Column="1" />
-        <ListBox x:Name="LbHand" Grid.Column="1" HorizontalAlignment="Left" Height="339" Margin="10,41,0,0"
-                 Grid.RowSpan="2" VerticalAlignment="Top" Width="175" Background="#FFA1887F" />
-        <Label x:Name="lblGameProgress" Content="Game progress" Foreground="#D4E157" HorizontalAlignment="Left"
-               VerticalAlignment="Top" Grid.Column="0" Grid.Row="1" Margin="10,10,0,0" Height="31" Width="140" />
-        <TextBox x:Name="TbGameProcess" TextWrapping="Wrap" AcceptsReturn="True" HorizontalAlignment="Left"
-                 Height="175" Margin="10,41,0,0" Grid.Column="0" Grid.Row="1" VerticalAlignment="Top" Width="287"
+                 Height="339" Margin="10,41,0,0"
+                 Grid.RowSpan="2"
+                 VerticalAlignment="Top" 
+                 Width="175"
                  Background="#FFA1887F" />
-        <Label x:Name="LblBooks" Content="Books" Foreground="#D4E157" HorizontalAlignment="Left"
-               VerticalAlignment="Top" Grid.Column="0" Grid.Row="1" Margin="10,221,0,0" Height="31" Width="65" />
-        <TextBox x:Name="TbBooks" HorizontalAlignment="Left" Height="126" Margin="10,252,0,0" Grid.Column="0"
-                 Grid.Row="1" VerticalAlignment="Top" Width="287" Background="#FFA1887F" />
-        <Button x:Name="BtnAskForCard" Content="Ask for a card" Foreground="#D4E157" Grid.Column="1"
-                HorizontalAlignment="Left" Margin="10,319,0,0" Grid.Row="1" VerticalAlignment="Top" Width="175"
-                Height="59" Background="#FF3E2723" BorderBrush="#FF3E2723" Click="BtnAskForCard_Click" />
+        <Label x:Name="LblBooks" 
+               Content="Books"
+               Foreground="#D4E157" 
+               HorizontalAlignment="Left"
+               VerticalAlignment="Top" 
+               Grid.Column="0" Grid.Row="1" 
+               Margin="10,221,0,0" 
+               Height="31" 
+               Width="65" />
+        <ScrollViewer x:Name="TbBooks" 
+                      HorizontalAlignment="Left" 
+                      Height="126" Margin="10,252,0,0" 
+                      Grid.Column="0"
+                      Grid.Row="1"
+                      VerticalAlignment="Top"
+                      Width="287" 
+                      Background="#FFA1887F" 
+                      Grid.ColumnSpan="2" />
+        <Button x:Name="BtnAskForCard" 
+                Content="Ask for a card" 
+                Foreground="#D4E157" 
+                Grid.Column="2"
+                HorizontalAlignment="Left"
+                Margin="10,319,0,0" 
+                Grid.Row="1" 
+                VerticalAlignment="Top" 
+                Width="175"
+                Height="59" 
+                Background="#FF3E2723"
+                BorderBrush="#FF3E2723" 
+                Click="BtnAskForCard_Click" />
     </Grid>
 </Window>
